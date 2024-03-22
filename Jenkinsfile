@@ -66,9 +66,7 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     ls
-                    echo "Ceci est une instruction de debug A" 
                     cat $KUBECONFIG > .kube/config
-                    echo "Ceci est une instruction de debug B" 
                     helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
@@ -83,7 +81,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace qa
                     '''
                 }
             }
@@ -96,10 +94,8 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     ls
-                    echo "Ceci est une instruction de debug A" 
                     cat $KUBECONFIG > .kube/config
-                    echo "Ceci est une instruction de debug B" 
-                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace staging
                     '''
                 }
             }
@@ -122,7 +118,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace prod
                     '''
                 }
             }
