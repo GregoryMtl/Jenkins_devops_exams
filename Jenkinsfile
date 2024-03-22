@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script{
                     sh '''
-                    docker stop $(docker ps -aq)
-                    docker rm -f $(docker ps -aq)
+                    docker stop $(docker ps -aq);
+                    docker rm -f $(docker ps -aq);
                     '''
                 } 
             }
