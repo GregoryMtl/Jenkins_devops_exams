@@ -16,11 +16,13 @@ spec:
     spec:
       containers:
         - name: {{ .Values.cast_db.name }}
-          envFrom:
-            - secretRef:
-                name: {{ .Values.cast_db.config.secret }}
-            - configMapRef:
-                name: {{ .Values.cast_db.config.configmap }}
+          env:
+          - name: POSTGRES_USER
+            value: "cast_db_username"
+          - name: POSTGRES_DB
+            value: "cast_db_dev"
+          - name: POSTGRES_HOST_AUTH_METHOD
+            value: "trust"
           image: {{ .Values.cast_db.image }}
           ports:
             - containerPort: {{ .Values.cast_db.service.port }}
@@ -54,11 +56,18 @@ spec:
     spec:
       containers:
         - name: {{ .Values.movie_db.name }}
-          envFrom:
-            - secretRef:
-                name: {{ .Values.movie_db.config.secret }}
-            - configMapRef:
-                name: {{ .Values.movie_db.config.configmap }}
+          env:
+            - name: POSTGRES_USER
+              value: "movie_db_username"
+            - name: POSTGRES_DB
+              value: "movie_db_dev"
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "trust"
+          # envFrom:
+          #   - secretRef:
+          #       name: {{ .Values.movie_db.config.secret }}
+          #   - configMapRef:
+          #       name: {{ .Values.movie_db.config.configmap }}
           image: {{ .Values.movie_db.image }}
           ports:
             - containerPort: {{ .Values.movie_db.service.port }}

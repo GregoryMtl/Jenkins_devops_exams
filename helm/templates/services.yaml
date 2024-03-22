@@ -50,32 +50,29 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.cast_db.name }}-service
+  name: {{ .Values.cast_db.name }}
   labels:
-    name: {{ .Values.cast_db.name }}-service
+    name: {{ .Values.cast_db.name }}
 spec:
   type: {{ .Values.cast_db.service.type }}
   ports:
     - port: {{ .Values.cast_db.service.port }}
-      targetPort: {{ .Values.cast_db.service.port }}
+      targetPort: {{ .Values.cast_db.service.targetPort }}
   selector:
-    name: {{ .Values.cast_db.name }}-service
+    name: {{ .Values.cast_db.name }}
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.movie_db.name }}-service
+  name: {{ .Values.movie_db.name }}
   labels:
     name: {{ .Values.movie_db.name }}
 spec:
   type: {{ .Values.movie_db.service.type }}
   ports:
     - port: {{ .Values.movie_db.service.port }}
-      targetPort: {{ .Values.movie_db.service.port }}
+      targetPort: {{ .Values.movie_db.service.targetPort }}
   selector:
-    name: {{ .Values.movie_db.name }}-service
-
-
-
+    name: {{ .Values.movie_db.name }}

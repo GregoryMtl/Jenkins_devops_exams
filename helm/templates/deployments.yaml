@@ -1,3 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  default.conf: |
+    server {
+      listen 8080;
+
+      location /api/v1/movies {
+        proxy_pass http://movie-service:8000/api/v1/movies;
+      }
+
+      location /api/v1/casts {
+        proxy_pass http://cast-service:8000/api/v1/casts;
+      }
+    }
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,14 +36,20 @@ spec:
       labels:
         name: {{ .Values.nginx.name }}
     spec:
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            defaultMode: 484
       containers:
         - name: {{ .Values.nginx.name }}
           image: "{{ .Values.nginx.image }}"
           ports:
             - containerPort: {{ .Values.nginx.service.port }}
               protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/
 
 ---
 
@@ -52,7 +78,9 @@ spec:
           args: {{ .Values.movie_service.image.args }}
           env:
             - name: DATABASE_URI
-              value: postgresql://movie_db_username:movie_db_password@movie-db-service/movie_db_dev
+              value: postgresql://movie_db_username:movie_db_password@movie-db/movie_db_dev
+            - name: CAST_SERVICE_HOST_URL
+              value: http://cast_service:8000/api/v1/casts/
           ports:
             - containerPort: {{ .Values.movie_service.service.port }}
               protocol: TCP
@@ -60,7 +88,6 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
 
 ---
-
 
 apiVersion: apps/v1
 kind: Deployment
@@ -87,7 +114,7 @@ spec:
           args: {{ .Values.movie_service.image.args }}
           env:
             - name: DATABASE_URI
-              value: postgresql://cast_db_username:cast_db_password@cast-db-service/cast_db_dev
+              value: postgresql://cast_db_username:cast_db_password@cast-db/cast_db_dev
           ports:
             - containerPort: {{ .Values.cast_service.service.port }}
               protocol: TCP

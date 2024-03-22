@@ -8,7 +8,7 @@ nginx:
     enabled: false
   service:
     type: NodePort
-    port: 8080
+    port: 8200
     targetPort: 8080
 
 pvc:
@@ -29,12 +29,11 @@ movie_service:
     repository: gregoryp/jenkins-movie
     tag: "latest"
     command: "uvicorn"
-    args: [ "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8001" ]
+    args: [ "app.main:app", "--host", "0.0.0.0", "--port", "8001" ]
   service:
     type: ClusterIP
     port: 8001
     targetPort: 8000
-  volumes: ./services/movie:/app
 
 cast_service:
   name: cast-service
@@ -47,13 +46,12 @@ cast_service:
     repository: gregoryp/jenkins-cast
     tag: "latest"
     command: "uvicorn"
-    args: [ "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8001" ]
+    args: [ "app.main:app", "--host", "0.0.0.0", "--port", "8001" ]
   service:
     type: ClusterIP
     port: 8002
     targetPort: 8000
-  volumes: ./services/cast:/app
-  
+
 # Bases de données
 
 movie_db:
@@ -63,15 +61,15 @@ movie_db:
   containerName: movie-db
   image: postgres:12.1-alpine
   config:
-    secret: db-secret
-    configmap: db-configmap
+    secret: movie-db-secret
+    configmap: movie-db-configmap
   pvc:
     name: pgdata
     accessMode: ReadWriteOnce
     storage: 500Mi
   service:
     type: ClusterIP
-    port: 8005
+    port: 5432
 
 cast_db:
   name: cast-db
@@ -80,12 +78,12 @@ cast_db:
   containerName: cast-db
   image: postgres:12.1-alpine
   config:
-    secret: db-secret
-    configmap: db-configmap
+    secret: cast-db-secret
+    configmap: cast-db-configmap
   pvc:
     name: pgdata
     accessMode: ReadWriteOnce
     storage: 500Mi
   service:
     type: ClusterIP
-    port: 8006
+    port: 5432
