@@ -50,6 +50,9 @@ spec:
           image: "{{ .Values.movie_service.image.repository }}:{{ .Values.movie_service.image.tag }}"
           command: [{{ .Values.movie_service.image.command }}]
           args: {{ .Values.movie_service.image.args }}
+          env:
+            - name: DATABASE_URI
+              value: postgresql://movie_db_username:movie_db_password@movie-db-service/movie_db_dev
           ports:
             - containerPort: {{ .Values.movie_service.service.port }}
               protocol: TCP
@@ -82,6 +85,9 @@ spec:
           image: "{{ .Values.cast_service.image.repository }}:{{ .Values.cast_service.image.tag }}"
           command: [{{ .Values.movie_service.image.command }}]
           args: {{ .Values.movie_service.image.args }}
+          env:
+            - name: DATABASE_URI
+              value: postgresql://cast_db_username:cast_db_password@cast-db-service/cast_db_dev
           ports:
             - containerPort: {{ .Values.cast_service.service.port }}
               protocol: TCP

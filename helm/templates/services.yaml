@@ -44,3 +44,38 @@ spec:
       targetPort: {{ .Values.cast_service.service.port }}
   selector:
     name: {{ .Values.cast_service.name }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.cast_db.name }}-service
+  labels:
+    name: {{ .Values.cast_db.name }}-service
+spec:
+  type: {{ .Values.cast_db.service.type }}
+  ports:
+    - port: {{ .Values.cast_db.service.port }}
+      targetPort: {{ .Values.cast_db.service.port }}
+  selector:
+    name: {{ .Values.cast_db.name }}-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.movie_db.name }}-service
+  labels:
+    name: {{ .Values.movie_db.name }}
+spec:
+  type: {{ .Values.movie_db.service.type }}
+  ports:
+    - port: {{ .Values.movie_db.service.port }}
+      targetPort: {{ .Values.movie_db.service.port }}
+  selector:
+    name: {{ .Values.movie_db.name }}-service
+
+
+
