@@ -26,18 +26,18 @@ pipeline {
                     docker rm -f $(docker ps -aq)
                     '''
                 }
-            }
 
-            parallel {
-                stage('Build Image CAST') {
-                    steps {
-                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                parallel {
+                    stage('Build Image CAST') {
+                        steps {
+                            sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                        }
                     }
-                }
 
-                stage('Build Image MOVIE') {
-                    steps {
-                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
+                    stage('Build Image MOVIE') {
+                        steps {
+                            sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
+                        }
                     }
                 }
             }
