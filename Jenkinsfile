@@ -14,30 +14,32 @@ pipeline {
     agent any
     stages {
 
-        // https://www.jenkins.io/blog/2017/09/25/declarative-1/
-        // On nettoie les containers actifs, et on build séparément les deux images
-        // Cela simplifiera l'organisation et la création des charts
-        stage('Docker Build') { 
-
+        stage('Docker Clean') {
             steps {
                 script{
                     sh '''
                     docker stop $(docker ps -aq)
                     docker rm -f $(docker ps -aq)
                     '''
+                } 
+            }
+        }
+
+        // https://www.jenkins.io/blog/2017/09/25/declarative-1/
+        // On nettoie les containers actifs, et on build séparément les deux images
+        // Cela simplifiera l'organisation et la création des charts
+        
+        stage('Docker Build') { 
+            parallel {
+                stage('Build Image CAST') {
+                    steps {
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                    }
                 }
 
-                parallel {
-                    stage('Build Image CAST') {
-                        steps {
-                            sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
-                        }
-                    }
-
-                    stage('Build Image MOVIE') {
-                        steps {
-                            sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
-                        }
+                stage('Build Image MOVIE') {
+                    steps {
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
                     }
                 }
             }
