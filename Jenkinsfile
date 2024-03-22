@@ -66,7 +66,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkins-exam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkins-exam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
             }
@@ -94,7 +94,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkins-exam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
             }
@@ -117,7 +117,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install jenkins-exam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
+                    helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
             }
