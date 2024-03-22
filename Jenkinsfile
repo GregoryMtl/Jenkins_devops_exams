@@ -19,14 +19,12 @@ pipeline {
         // Cela simplifiera l'organisation et la création des charts
         stage('Docker Build') { 
 
-            stage('Cleaning up') {
-                steps {
-                    script{
-                        sh '''
-                        docker stop $(docker ps -aq)
-                        docker rm -f $(docker ps -aq)
-                        '''
-                    }
+            steps {
+                script{
+                    sh '''
+                    docker stop $(docker ps -aq)
+                    docker rm -f $(docker ps -aq)
+                    '''
                 }
             }
 
