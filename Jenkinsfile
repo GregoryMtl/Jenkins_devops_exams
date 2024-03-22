@@ -32,11 +32,15 @@ pipeline {
 
             parallel {
                 stage('Build Image CAST') {
-                    sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                    steps {
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                    }
                 }
 
                 stage('Build Image MOVIE') {
-                    sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
+                    steps {
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
+                    }
                 }
             }
         }
