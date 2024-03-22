@@ -58,6 +58,12 @@ pipeline {
             }
         }
 
+        stage('Test env file') {
+            steps {
+                echo "Debug : ${KUBECONFIG}" 
+            }
+        }
+
         stage('Deploiement en dev') {
             steps {
                 script {
