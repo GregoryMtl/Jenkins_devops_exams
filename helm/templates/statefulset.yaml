@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.cast_db.name }}
+  labels:
+    name : {{.Values.cast_db.name }}
+spec:
+  replicas: {{ .Values.cast_db.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.cast_db.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.cast_db.name }}
+    spec:
+      containers:
+        - name: {{ .Values.cast_db.name }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.cast_db.config.secret }}
+            - configMapRef:
+                name: {{ .Values.cast_db.config.configmap }}
+          image: {{ .Values.cast_db.image }}
+          ports:
+            - containerPort: {{ .Values.cast_db.service.port }}
+              protocol: TCP
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.movie_db.name }}
+  labels:
+    name : {{.Values.movie_db.name }}
+spec:
+  replicas: {{ .Values.movie_db.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.movie_db.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.movie_db.name }}
+    spec:
+      containers:
+        - name: {{ .Values.movie_db.name }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.movie_db.config.secret }}
+            - configMapRef:
+                name: {{ .Values.movie_db.config.configmap }}
+          image: {{ .Values.movie_db.image }}
+          ports:
+            - containerPort: {{ .Values.movie_db.service.port }}
+              protocol: TCP
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

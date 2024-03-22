@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nginx.name }}
+  labels:
+    name: {{ .Values.nginx.name }}
+spec:
+  {{- if not .Values.nginx.autoscaling.enabled }}
+  replicas: {{ .Values.nginx.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      name: {{ .Values.nginx.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.nginx.name }}
+    spec:
+      containers:
+        - name: {{ .Values.nginx.name }}
+          image: "{{ .Values.nginx.image }}"
+          ports:
+            - containerPort: {{ .Values.nginx.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.movie_service.name }}
+  labels:
+    name: {{ .Values.movie_service.name }}
+spec:
+  {{- if not .Values.movie_service.autoscaling.enabled }}
+  replicas: {{ .Values.movie_service.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      name: {{ .Values.movie_service.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.movie_service.name }}
+    spec:
+      containers:
+        - name: {{ .Values.movie_service.name }}
+          image: "{{ .Values.movie_service.image }}"
+          ports:
+            - containerPort: {{ .Values.movie_service.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.cast_service.name }}
+  labels:
+    name: {{ .Values.cast_service.name }}
+spec:
+  {{- if not .Values.cast_service.autoscaling.enabled }}
+  replicas: {{ .Values.cast_service.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      name: {{ .Values.cast_service.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.cast_service.name }}
+    spec:
+      containers:
+        - name: {{ .Values.cast_service.name }}
+          image: "{{ .Values.cast_service.image }}"
+          ports:
+            - containerPort: {{ .Values.cast_service.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

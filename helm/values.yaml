@@ -1,0 +1,81 @@
+# Services communs / NGINX et Stockage
+
+nginx:
+  name: nginx
+  image: nginx:latest
+  replicas: 1
+  autoscaling:
+    enabled: false
+  service:
+    type: NodePort
+    port: 8000
+    targetPort: 8000
+
+pvc:
+  name: pgdata
+  accessMode: ReadWriteOnce
+  storage: 500Mi
+
+# Services (images dockerhub build avec Jenkins)
+
+movie_service:
+  name: movie-service
+  label: movie-service
+  replicas: 1
+  autoscaling:
+    enabled: false
+  containerName: movie-service
+  image: gregoryp/jenkins-movie:latest
+  service:
+    type: ClusterIP
+    port: 8001
+    targetPort: 8000
+
+cast_service:
+  name: cast-service
+  label: cast-service
+  replicas: 1
+  autoscaling:
+    enabled: false
+  containerName: cast-service
+  image: gregoryp/jenkins-cast:latest
+  service:
+    type: ClusterIP
+    port: 8002
+    targetPort: 8000
+  
+# Bases de données
+
+movie_db:
+  name: movie-db
+  label: movie-db
+  replicas: 1
+  containerName: movie-db
+  image: postgres:12.1-alpine:latest
+  config:
+    secret: db-secret
+    configmap: db-configmap
+  pvc:
+    name: pgdata
+    accessMode: ReadWriteOnce
+    storage: 500Mi
+  service:
+    type: ClusterIP
+    port: 8001
+
+cast_db:
+  name: cast-db
+  label: cast-db
+  replicas: 1
+  containerName: cast-db
+  image: postgres:12.1-alpine:latest
+  config:
+    secret: db-secret
+    configmap: db-configmap
+  pvc:
+    name: pgdata
+    accessMode: ReadWriteOnce
+    storage: 500Mi
+  service:
+    type: ClusterIP
+    port: 8002

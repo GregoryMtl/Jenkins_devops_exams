@@ -1,0 +1,46 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.nginx.name }}
+  labels:
+    name: {{ .Values.nginx.name }}
+spec:
+  type: {{ .Values.nginx.service.type }}
+  ports:
+    - port: {{ .Values.nginx.service.port }}
+      targetPort: {{ .Values.nginx.service.port }}
+  selector:
+    name: {{ .Values.nginx.name }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.movie_service.name }}
+  labels:
+    name: {{ .Values.movie_service.name }}
+spec:
+  type: {{ .Values.movie_service.service.type }}
+  ports:
+    - port: {{ .Values.movie_service.service.port }}
+      targetPort: {{ .Values.movie_service.service.port }}
+  selector:
+    name: {{ .Values.movie_service.name }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.cast_service.name }}
+  labels:
+    name: {{ .Values.cast_service.name }}
+spec:
+  type: {{ .Values.cast_service.service.type }}
+  ports:
+    - port: {{ .Values.cast_service.service.port }}
+      targetPort: {{ .Values.cast_service.service.port }}
+  selector:
+    name: {{ .Values.cast_service.name }}
