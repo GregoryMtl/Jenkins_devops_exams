@@ -14,16 +14,16 @@ pipeline {
     agent any
     stages {
 
-        stage('Docker Clean') {
-            steps {
-                script{
-                    sh '''
-                    docker stop $(docker ps -aq);
-                    docker rm -f $(docker ps -aq);
-                    '''
-                } 
-            }
-        }
+        // stage('Docker Clean') {
+        //     steps {
+        //         script{
+        //             sh '''
+        //             docker stop $(docker ps -aq);
+        //             docker rm -f $(docker ps -aq);
+        //             '''
+        //         } 
+        //     }
+        // }
 
         // https://www.jenkins.io/blog/2017/09/25/declarative-1/
         // On nettoie les containers actifs, et on build séparément les deux images
