@@ -104,7 +104,7 @@ pipeline {
         stage('Deploiement en prod') {
             // On vérifie que nous sommes bien sur la branche master
             when {
-                branch 'master'
+                expression { env.GIT_BRANCH == 'origin/master' }
             }
             steps {
 
