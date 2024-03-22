@@ -17,13 +17,17 @@ pipeline {
         // https://www.jenkins.io/blog/2017/09/25/declarative-1/
         // On nettoie les containers actifs, et on build séparément les deux images
         // Cela simplifiera l'organisation et la création des charts
-        stage(' Docker Build') { 
+        stage('Docker Build') { 
 
             stage('Cleaning up') {
-                sh '''
-                docker stop $(docker ps -aq)
-                docker rm -f $(docker ps -aq)
-                '''
+                steps {
+                    script{
+                        sh '''
+                        docker stop $(docker ps -aq)
+                        docker rm -f $(docker ps -aq)
+                        '''
+                    }
+                }
             }
 
             parallel {
@@ -57,8 +61,7 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install cast-service ./cast-service --namespace dev
-                    helm upgrade --install movie-service ./movie-service --namespace dev
+                    helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace dev
                     '''
                 }
             }
@@ -71,8 +74,7 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install cast-service ./cast-service --namespace qa
-                    helm upgrade --install movie-service ./movie-service --namespace qa
+                    helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace qa
                     '''
                 }
             }
@@ -85,8 +87,7 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install cast-service ./cast-service --namespace staging
-                    helm upgrade --install movie-service ./movie-service --namespace staging
+                    helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace staging
                     '''
                 }
             }
@@ -108,8 +109,7 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install cast-service ./cast-service --namespace prod
-                    helm upgrade --install movie-service ./movie-service --namespace prod
+                    helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace prod
                     '''
                 }
             }
