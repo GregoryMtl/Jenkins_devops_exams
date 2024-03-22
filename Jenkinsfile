@@ -64,6 +64,7 @@ pipeline {
                     sh '''
                     rm -Rf .kube
                     mkdir .kube
+                    ls
                     cat $KUBECONFIG > .kube/config
                     helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace dev
                     '''
@@ -77,6 +78,7 @@ pipeline {
                     sh '''
                     rm -Rf .kube
                     mkdir .kube
+                    ls
                     cat $KUBECONFIG > .kube/config
                     helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace qa
                     '''
@@ -90,6 +92,7 @@ pipeline {
                     sh '''
                     rm -Rf .kube
                     mkdir .kube
+                    ls
                     cat $KUBECONFIG > .kube/config
                     helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace staging
                     '''
@@ -112,6 +115,7 @@ pipeline {
                     sh '''
                     rm -Rf .kube
                     mkdir .kube
+                    ls
                     cat $KUBECONFIG > .kube/config
                     helm upgrade --install ./helm --values=./help/values.yaml --create-namespace --namespace prod
                     '''
