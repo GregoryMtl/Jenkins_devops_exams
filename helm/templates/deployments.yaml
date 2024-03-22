@@ -86,6 +86,11 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: movie-volume
+              mountPath: /app
+      volumes:
+        - name: movie-volume
 
 ---
 
@@ -120,3 +125,8 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: cast-volume
+              mountPath: /app
+      volumes:
+        - name: cast-volume
