@@ -58,11 +58,6 @@ pipeline {
             }
         }
 
-        stage('Test env file') {
-            steps {
-                echo "Debug : ${KUBECONFIG}" 
-            }
-        }
 
         stage('Deploiement en dev') {
             steps {
@@ -99,7 +94,9 @@ pipeline {
                     rm -Rf .kube
                     mkdir .kube
                     ls
+                    echo "Ceci est une instruction de debug A" 
                     cat $KUBECONFIG > .kube/config
+                    echo "Ceci est une instruction de debug B" 
                     helm upgrade --install jenkinsexam ./helm  --values=./helm/values.yaml --create-namespace --namespace dev
                     '''
                 }
