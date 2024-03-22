@@ -47,7 +47,9 @@ spec:
     spec:
       containers:
         - name: {{ .Values.movie_service.name }}
-          image: "{{ .Values.movie_service.image }}"
+          image: "{{ .Values.movie_service.image.repository }}:{{ .Values.movie_service.image.tag }}"
+          command: [{{ .Values.movie_service.image.command }}]
+          args: {{ .Values.movie_service.image.args }}
           ports:
             - containerPort: {{ .Values.movie_service.service.port }}
               protocol: TCP
@@ -77,7 +79,9 @@ spec:
     spec:
       containers:
         - name: {{ .Values.cast_service.name }}
-          image: "{{ .Values.cast_service.image }}"
+          image: "{{ .Values.cast_service.image.repository }}:{{ .Values.cast_service.image.tag }}"
+          command: [{{ .Values.movie_service.image.command }}]
+          args: {{ .Values.movie_service.image.args }}
           ports:
             - containerPort: {{ .Values.cast_service.service.port }}
               protocol: TCP

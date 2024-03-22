@@ -8,8 +8,8 @@ nginx:
     enabled: false
   service:
     type: NodePort
-    port: 8000
-    targetPort: 8000
+    port: 8080
+    targetPort: 8080
 
 pvc:
   name: pgdata
@@ -25,11 +25,16 @@ movie_service:
   autoscaling:
     enabled: false
   containerName: movie-service
-  image: gregoryp/jenkins-movie:latest
+  image:
+    repository: gregoryp/jenkins-movie
+    tag: "latest"
+    command: "uvicorn"
+    args: [ "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8001" ]
   service:
     type: ClusterIP
     port: 8001
     targetPort: 8000
+  volumes: ./services/movie:/app
 
 cast_service:
   name: cast-service
@@ -38,11 +43,16 @@ cast_service:
   autoscaling:
     enabled: false
   containerName: cast-service
-  image: gregoryp/jenkins-cast:latest
+  image:
+    repository: gregoryp/jenkins-cast
+    tag: "latest"
+    command: "uvicorn"
+    args: [ "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8001" ]
   service:
     type: ClusterIP
     port: 8002
     targetPort: 8000
+  volumes: ./services/cast:/app
   
 # Bases de données
 
@@ -61,7 +71,7 @@ movie_db:
     storage: 500Mi
   service:
     type: ClusterIP
-    port: 8001
+    port: 8005
 
 cast_db:
   name: cast-db
@@ -78,4 +88,4 @@ cast_db:
     storage: 500Mi
   service:
     type: ClusterIP
-    port: 8002
+    port: 8006
