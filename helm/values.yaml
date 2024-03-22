@@ -51,7 +51,7 @@ movie_db:
   label: movie-db
   replicas: 1
   containerName: movie-db
-  image: postgres:12.1-alpine:latest
+  image: postgres:12.1-alpine
   config:
     secret: db-secret
     configmap: db-configmap
@@ -68,7 +68,7 @@ cast_db:
   label: cast-db
   replicas: 1
   containerName: cast-db
-  image: postgres:12.1-alpine:latest
+  image: postgres:12.1-alpine
   config:
     secret: db-secret
     configmap: db-configmap

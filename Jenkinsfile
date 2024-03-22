@@ -33,13 +33,13 @@ pipeline {
             parallel {
                 stage('Build Image CAST') {
                     steps {
-                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG ./services/cast'
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:latest ./services/cast'
                     }
                 }
 
                 stage('Build Image MOVIE') {
                     steps {
-                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG ./services/movie'
+                        sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:latest ./services/movie'
                     }
                 }
             }
